@@ -1,0 +1,15 @@
+---
+- name: testing blocks
+  hosts: all 
+  remote_user: ec2-user
+  
+  tasks:
+     - block:
+        - name: copy in a block
+          copy:
+          src: /tmp/test1.txt
+          dest: /tmp/loops
+       rescue:
+        - debug: msg="stop. error time" 
+       always:
+        - debug: msg= "This message will always display" 

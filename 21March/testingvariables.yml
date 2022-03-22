@@ -1,0 +1,11 @@
+---
+- name: testing variables
+  hosts: all 
+  remote_user: ec2-user
+  
+  tasks:
+  - name: get name on server
+    shell: date
+    register: output
+
+  - debug: msg="the date is{{output.stdout}}"

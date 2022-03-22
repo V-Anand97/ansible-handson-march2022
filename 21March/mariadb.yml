@@ -1,0 +1,40 @@
+---
+- name: install and configure maria DB
+  hosts: all 
+  remote_user: ec2-user
+  become: yes
+
+  vars:
+    - mysql_port: 3306
+  tasks:
+  - name: Install maria DB
+    yum: 
+      name: mariadb-server
+      state: latest
+
+  - name: create my sql configuration file
+    template: 
+        src: my.cnf.j2
+        dest: /Users/anandvaidyanathan/Documents/ansible-handson-march-2022/my.cnf
+        notify: restart mariadb
+
+  - name: create mariadb log file 
+    file: 
+        path: /var/log/mysqld.log
+        state: touch
+        owner: mysql
+        group: mysql
+        mode: 0775
+
+  - name: start mariadb service
+    service: 
+      name: mariadb
+      state: started
+      enabled: yes
+
+  handlers:
+  - name: restart mariadb
+    service: 
+      name: mariadb  
+      state: restarted 
+

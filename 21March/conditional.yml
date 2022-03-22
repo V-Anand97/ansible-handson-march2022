@@ -1,0 +1,53 @@
+---
+- name: testing variables
+  hosts: all 
+  remote_user: ec2-user
+  
+  vars:
+    unicorn: true
+  
+  tasks:
+  - name: yum install libselinux-utils
+    yum: 
+     name: "{{items}}"
+     state: latest
+     with_items:
+     - pip
+     - python3
+      
+
+  - name: dont install on debian machines
+    yum:
+      name: httpd
+      state: latest
+      #when: (ansible_os_family=="RedHat" and ansible_distribution_major_version=="6")
+  
+  - name: are unicorns real or fake
+    shell: echo "unicorns are fake"
+    when: not unicorn
+
+  #- fail: msg=" unicorns require rainbow vairable to be set"
+  #  when: rainbow is undefined
+  #- name: check whether selinux is running
+ #   shell: getenforce
+ #   register: sestatus
+
+  - name: configure selinux if not enforcing
+    seboolean: 
+       name: mysql_connect_any
+       state: true
+       persistent: yes
+   # when: sestatus.rc != 0
+  
+  - name: checking systemd
+    shell: cat /var/log/messages
+    register: log_output
+
+  - name: next_task
+    shell: 
+       echo "systemd knows when we are using ansible stuff"
+    when: log_output.stdout.find('ansible') !=0
+    register: shell_echo
+  
+  - debug: var=shell_echo   
+ 

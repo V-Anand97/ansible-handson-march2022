@@ -1,0 +1,18 @@
+---
+#this is a commment
+
+name: Anand
+occupation: DevOps Engineer
+state : TN
+
+- chedder
+- swiss
+- salted 
+
+cheeses:
+- chedder
+- swiss
+- salted
+
+cheeses: ['cheddeer', 'swiss', 'salted']
+cheesed: "{{chedder}}"

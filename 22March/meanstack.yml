@@ -1,0 +1,9 @@
+---
+- name: install a meanstack application
+  hosts: all
+  become: true 
+  roles:
+    - prerequsites
+    - mongodb
+    - nodejs
+
