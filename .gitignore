@@ -1,1 +1,3 @@
-ansible_hosts
+ansible.cfg
+ansible.pem
+backup_file_for_reference_ansible_hosts
